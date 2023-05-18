@@ -27,3 +27,4 @@ def solution(today, terms, privacies):
     
     return answer
     
+ 
