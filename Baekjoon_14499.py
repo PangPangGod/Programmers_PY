@@ -53,3 +53,63 @@ for cmd in commands :
     
     loc_N = mov_N; loc_M = mov_M
     print(dice_col[1])
+
+
+
+##########################################
+
+#8월 17일날 다시 풀어본 문제 (시험대비)
+# 확실히 실력이 늘었다고 생각하는게 똑같은 로직인데 코드 길이가 많이 짧아지고
+# 생각도 좀 더 직관적으로 변했다.
+
+#14499 주사위 굴리기
+import sys
+
+def dice_move(cmd,dice) :
+    dice_copy = dice[:]
+    if cmd == 1 :
+        dice[1] = dice_copy[4]
+        dice[3] = dice_copy[5]
+        dice[4] = dice_copy[3]
+        dice[5] = dice_copy[1]
+    if cmd == 2 : 
+        dice[1] = dice_copy[5]
+        dice[3] = dice_copy[4]
+        dice[4] = dice_copy[1]
+        dice[5] = dice_copy[3]
+    if cmd == 3 :
+        dice[0] = dice_copy[1]
+        dice[1] = dice_copy[2]
+        dice[2] = dice_copy[3]
+        dice[3] = dice_copy[0]
+    if cmd == 4 :
+        dice[0] = dice_copy[3]
+        dice[1] = dice_copy[0]
+        dice[2] = dice_copy[1]
+        dice[3] = dice_copy[2]
+        
+    return dice
+
+####### main
+N, M, x, y, K = map(int, sys.stdin.readline().split())
+
+grid = [list(map(int,sys.stdin.readline().split())) for _ in range(N)]
+cmds = list(map(int,sys.stdin.readline().split()))
+
+dice= [0 for _ in range(6)]
+
+dx = [0,0,-1,1]
+dy = [1,-1,0,0]
+
+for cmd in cmds :
+    if 0<=x+dx[cmd-1]<N and 0<=y+dy[cmd-1]<M :
+        x,y = x+dx[cmd-1],y+dy[cmd-1]
+        dice = dice_move(cmd,dice)
+
+        if grid[x][y] == 0 :
+            grid[x][y] = dice[3]
+        else :
+            dice[3] = grid[x][y]
+            grid[x][y] = 0
+
+        print(dice[1])
